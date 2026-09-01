@@ -2,45 +2,48 @@
 
 static int	positive(const char *s)
 {
-    if(atoi(s))
-        return (1);
-	return (0);
-}
-
-static long	parse_long(const char *s, int *ok)
-{
-    long long a;
-    if (a = positive(s))
-        ok = 1;
-    else
-        ok = 0;
-    return (ok);
-}
-
-/*
-** TODO:
-** 1. check argc == 9 (program name + 8 arguments)
-** 2. parse argv[1] to argv[7] as numbers with ft_parse_long()
-** 3. check argv[8] is exactly "fifo" or "edf" (strcmp)
-** 4. fill params with the parsed values
-** 5. on any error, print a clear message to stderr and return 0
-** 6. return 1 if everything is valid
-*/
-int	parse_args(int ac, char **av, t_params *params)
-{
     int i;
+
+    i = 0;
+    if (!s[0] || !s)
+        return (0);
+    while (s[i] != '\0')
+    {
+        if (s[i] < '0' || s[i] > '9')
+            return (0);
+        i++;
+    }
+	return (1);
+}
+
+long	parse_long(const char *s, int *ok)
+{
+    if (!positive(s))
+    {
+        *ok = 0;
+        return (0);
+    }
+    *ok = 1;
+    return(atoi(s));
+}
+
+int	parser(int ac, char **av, t_params *params)
+{
     if (ac == 9)
     {
-        i = 0;
-        if (i <= 9)
-        {
-            while(parse_long(av[i]) == 1)
-            {
-                
-            }
-            i++;
-        }
-
+        if (!parse_av1_2(av, params))
+            return (0);
+        if (!parse_av3_4(av, params))
+            return (0);
+        if (!parse_av5_6(av, params))
+            return (0);
+        if (!parse_av7_8(av, params))
+            return (0);
+        return (1);
     }
-	return (0);
+    else
+    {
+        printf("Error: expected 8 arguments\n");
+        return (0);
+    }
 }
