@@ -1,6 +1,6 @@
 #include "codexion.h"
 
-static long	elapsed_ms(struct timeval *start)
+long	diff_ms(struct timeval *start)
 {
 	struct timeval	now;
 	long			sec_diff;
@@ -12,9 +12,9 @@ static long	elapsed_ms(struct timeval *start)
 	return (sec_diff * 1000 + usec_diff / 1000);
 }
 
-void	log_msg(t_data *data, int coder_id, char *message)
+void	log_msg(t_data *data, int coder_id, char *mes)
 {
 	pthread_mutex_lock(&data->log_mutex);
-	printf("%ld %d %s\n", elapsed_ms(&data->start_time), coder_id, message);
+	printf("%ld %d %s\n", diff_ms(&data->start_time), coder_id, mes);
 	pthread_mutex_unlock(&data->log_mutex);
 }
